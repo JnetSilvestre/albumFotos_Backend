@@ -1,0 +1,21 @@
+{
+  "name": "album-fotos-backend",
+  "version": "1.0.0",
+  "description": "Projeto de biblioteca de classes para acesso ao MongoDB - armazenamento de fotos",
+  "main": "src/app.js",
+  "scripts": {
+    "start": "node src/app.js"
+  },
+  "keywords": [
+    "node",
+    "mongodb",
+    "mongoose",
+    "biblioteca",
+    "fotos"
+  ],
+  "author": "Aluno",
+  "license": "ISC",
+  "dependencies": {
+    "mongoose": "^7.0.0"
+  }
+}
