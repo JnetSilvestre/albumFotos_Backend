@@ -1,7 +1,6 @@
 const fs = require('fs');
 const path = require('path');
 
-// Caminho do arquivo de log na raiz do projeto
 const logFilePath = path.join(__dirname, '../../errors.log');
 
 /**
@@ -25,7 +24,7 @@ function logError(error) {
 
     fs.appendFileSync(logFilePath, linhaLog, 'utf8');
   } catch (logErr) {
-    // Último recurso: evitar quebra da aplicação caso o log falhe
+
     console.error('Falha ao gravar no arquivo de log:', logErr.message);
   }
 }

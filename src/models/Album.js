@@ -1,8 +1,10 @@
 const mongoose = require('mongoose');
+const AutoIncrement = require('mongoose-sequence')(mongoose);
 const { logError } = require('../utils/logger');
 
 const albumSchema = new mongoose.Schema(
   {
+    _id: Number,
     titulo: {
       type: String,
       required: true,
@@ -14,7 +16,7 @@ const albumSchema = new mongoose.Schema(
       default: ''
     },
     usuario: {
-      type: mongoose.Schema.Types.ObjectId,
+      type: Number,
       ref: 'Usuario',
       required: true
     },
@@ -24,9 +26,12 @@ const albumSchema = new mongoose.Schema(
     }
   },
   {
+    _id: false,
     versionKey: false
   }
 );
+
+albumSchema.plugin(AutoIncrement, { id: 'album_seq', inc_field: '_id' });
 
 function validarCamposObrigatoriosAlbum(dados) {
   if (!dados || !dados.titulo || !dados.titulo.trim()) {
@@ -42,7 +47,7 @@ albumSchema.statics.criarAlbum = async function (dados) {
   try {
     validarCamposObrigatoriosAlbum(dados);
 
-    if (!mongoose.Types.ObjectId.isValid(dados.usuario)) {
+    if (isNaN(dados.usuario)) {
       throw new Error('ID do usuário inválido.');
     }
 
@@ -69,7 +74,7 @@ albumSchema.statics.criarAlbum = async function (dados) {
 
 albumSchema.statics.buscarPorId = async function (id) {
   try {
-    if (!id || !mongoose.Types.ObjectId.isValid(id)) {
+    if (!id || isNaN(id)) {
       throw new Error('ID de álbum inválido.');
     }
 
@@ -88,7 +93,7 @@ albumSchema.statics.buscarPorId = async function (id) {
 
 albumSchema.statics.listarPorUsuario = async function (usuarioId) {
   try {
-    if (!usuarioId || !mongoose.Types.ObjectId.isValid(usuarioId)) {
+    if (!usuarioId || isNaN(usuarioId)) {
       throw new Error('ID de usuário inválido.');
     }
 
@@ -118,7 +123,7 @@ albumSchema.statics.listarTodos = async function () {
 
 albumSchema.statics.deletar = async function (id) {
   try {
-    if (!id || !mongoose.Types.ObjectId.isValid(id)) {
+    if (!id || isNaN(id)) {
       throw new Error('ID de álbum inválido.');
     }
 

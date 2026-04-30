@@ -13,9 +13,10 @@
     "biblioteca",
     "fotos"
   ],
-  "author": "Aluno",
+  "author": "Aluno: João Victor da Cruz Silvestre",
   "license": "ISC",
   "dependencies": {
-    "mongoose": "^7.0.0"
+    "mongoose": "^7.0.0",
+    "mongoose-sequence": "^6.0.1"
   }
 }

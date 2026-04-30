@@ -1,8 +1,10 @@
 const mongoose = require('mongoose');
+const AutoIncrement = require('mongoose-sequence')(mongoose);
 const { logError } = require('../utils/logger');
 
 const usuarioSchema = new mongoose.Schema(
   {
+    _id: Number,
     nome: {
       type: String,
       required: true,
@@ -21,9 +23,12 @@ const usuarioSchema = new mongoose.Schema(
     }
   },
   {
+    _id: false,
     versionKey: false
   }
 );
+
+usuarioSchema.plugin(AutoIncrement, { id: 'usuario_seq', inc_field: '_id' });
 
 function validarCamposObrigatoriosUsuario(dados) {
   if (!dados || !dados.nome || !dados.nome.trim()) {
@@ -59,7 +64,7 @@ usuarioSchema.statics.criarUsuario = async function (dados) {
 
 usuarioSchema.statics.buscarPorId = async function (id) {
   try {
-    if (!id || !mongoose.Types.ObjectId.isValid(id)) {
+    if (!id || isNaN(id)) {
       throw new Error('ID de usuário inválido.');
     }
 
@@ -88,7 +93,7 @@ usuarioSchema.statics.listarTodos = async function () {
 
 usuarioSchema.statics.deletar = async function (id) {
   try {
-    if (!id || !mongoose.Types.ObjectId.isValid(id)) {
+    if (!id || isNaN(id)) {
       throw new Error('ID de usuário inválido.');
     }
 

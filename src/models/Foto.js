@@ -1,8 +1,10 @@
 const mongoose = require('mongoose');
+const AutoIncrement = require('mongoose-sequence')(mongoose);
 const { logError } = require('../utils/logger');
 
 const fotoSchema = new mongoose.Schema(
   {
+    _id: Number,
     titulo: {
       type: String,
       required: true,
@@ -14,7 +16,7 @@ const fotoSchema = new mongoose.Schema(
       trim: true
     },
     album: {
-      type: mongoose.Schema.Types.ObjectId,
+      type: Number,
       ref: 'Album',
       required: true
     },
@@ -28,9 +30,12 @@ const fotoSchema = new mongoose.Schema(
     }
   },
   {
+    _id: false,
     versionKey: false
   }
 );
+
+fotoSchema.plugin(AutoIncrement, { id: 'foto_seq', inc_field: '_id' });
 
 function validarCamposObrigatoriosFoto(dados) {
   if (!dados || !dados.titulo || !dados.titulo.trim()) {
@@ -50,7 +55,7 @@ fotoSchema.statics.criarFoto = async function (dados) {
   try {
     validarCamposObrigatoriosFoto(dados);
 
-    if (!mongoose.Types.ObjectId.isValid(dados.album)) {
+    if (isNaN(dados.album)) {
       throw new Error('ID do álbum inválido.');
     }
 
@@ -86,7 +91,7 @@ fotoSchema.statics.criarFoto = async function (dados) {
 
 fotoSchema.statics.buscarPorId = async function (id) {
   try {
-    if (!id || !mongoose.Types.ObjectId.isValid(id)) {
+    if (!id || isNaN(id)) {
       throw new Error('ID de foto inválido.');
     }
 
@@ -111,7 +116,7 @@ fotoSchema.statics.buscarPorId = async function (id) {
 
 fotoSchema.statics.listarPorAlbum = async function (albumId) {
   try {
-    if (!albumId || !mongoose.Types.ObjectId.isValid(albumId)) {
+    if (!albumId || isNaN(albumId)) {
       throw new Error('ID de álbum inválido.');
     }
 
@@ -158,7 +163,7 @@ fotoSchema.statics.listarTodas = async function () {
 
 fotoSchema.statics.deletar = async function (id) {
   try {
-    if (!id || !mongoose.Types.ObjectId.isValid(id)) {
+    if (!id || isNaN(id)) {
       throw new Error('ID de foto inválido.');
     }
 
