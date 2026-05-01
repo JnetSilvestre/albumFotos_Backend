@@ -1,0 +1,11 @@
+[2026-04-30T22:15:11.384Z] Error: O campo titulo é obrigatório.
+Stack: Error: O campo titulo é obrigatório.
+    at validarCamposObrigatoriosFoto (src/models/Foto.js:29:11)
+    at model.criarFoto (src/models/Foto.js:43:5)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+---
+[2026-04-30T22:16:02.901Z] Error: ID de álbum inválido.
+Stack: Error: ID de álbum inválido.
+    at model.listarPorAlbum (src/models/Foto.js:82:13)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+---
