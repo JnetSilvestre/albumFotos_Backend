@@ -3,7 +3,7 @@
 ## Tema do Projeto 1
 **Armazenamento de fotos**, inspirado em aplicações como o Google Fotos, com armazenamento e busca de fotos em álbuns.
 
-## Descrição Curta
+## Descrição
 Esta é uma evolução do Projeto 1. A aplicação agora funciona como uma plataforma web completa que utiliza o framework **Express.js**. As classes e modelos originais (`Usuario`, `Album` e `Foto`) foram integradas e reutilizadas para persistência no MongoDB. A aplicação conta com interface gráfica em HTML/EJS e estilização em Vanilla CSS, permitindo cadastro, autenticação via sessão, criação de álbuns e gerenciamento de fotos.
 
 ## Tecnologias Utilizadas
