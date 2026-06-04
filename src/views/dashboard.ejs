@@ -1,0 +1,36 @@
+<%- include('partials/header') %>
+
+<div style="display: flex; justify-content: space-between; align-items: center;" class="mb-2">
+  <h2>Meus Álbuns</h2>
+  <a href="/albuns/novo" class="btn">Criar Novo Álbum</a>
+</div>
+
+<% if (erro) { %>
+  <div class="alert"><%= erro %></div>
+<% } %>
+
+<% if (albuns && albuns.length > 0) { %>
+  <div class="grid">
+    <% albuns.forEach(album => { %>
+      <div class="card">
+        <h3><%= album.titulo %></h3>
+        <p style="color: var(--text-muted); margin-bottom: 1.5rem;"><%= album.descricao || 'Sem descrição.' %></p>
+        
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+          <a href="/albuns/<%= album._id %>" class="btn">Ver Álbum</a>
+          
+          <form action="/albuns/<%= album._id %>/deletar" method="POST" style="display:inline;" onsubmit="return confirm('Tem certeza que deseja deletar este álbum? Todas as fotos serão perdidas.');">
+            <button type="submit" class="btn btn-danger" style="padding: 0.5rem 1rem;">Excluir</button>
+          </form>
+        </div>
+      </div>
+    <% }) %>
+  </div>
+<% } else { %>
+  <div class="card text-center" style="padding: 4rem 2rem;">
+    <p style="color: var(--text-muted); margin-bottom: 1.5rem;">Você ainda não possui nenhum álbum.</p>
+    <a href="/albuns/novo" class="btn">Criar meu primeiro Álbum</a>
+  </div>
+<% } %>
+
+<%- include('partials/footer') %>

@@ -1,0 +1,67 @@
+<%- include('partials/header') %>
+
+<div class="mb-2" style="display: flex; justify-content: space-between; align-items: flex-start;">
+  <div>
+    <a href="/" style="color: var(--text-muted); text-decoration: none; margin-bottom: 0.5rem; display: block;">&larr; Voltar para Meus Álbuns</a>
+    <h2><%= album.titulo %></h2>
+    <% if (album.descricao) { %>
+      <p style="color: var(--text-muted);"><%= album.descricao %></p>
+    <% } %>
+  </div>
+</div>
+
+<div class="card mb-2">
+  <h3>Adicionar Nova Foto</h3>
+  <form action="/albuns/<%= album._id %>/fotos" method="POST" style="margin-top: 1rem;">
+    <div class="form-group">
+      <label for="titulo">Título da Foto</label>
+      <input type="text" id="titulo" name="titulo" required placeholder="Ex: Por do sol na praia">
+    </div>
+    
+    <div class="form-group">
+      <label for="url">URL da Imagem</label>
+      <input type="url" id="url" name="url" required placeholder="https://exemplo.com/foto.jpg">
+    </div>
+
+    <div class="form-group">
+      <label for="tags">Tags (separadas por vírgula)</label>
+      <input type="text" id="tags" name="tags" placeholder="praia, férias, familia">
+    </div>
+
+    <button type="submit" class="btn">Adicionar Foto</button>
+  </form>
+</div>
+
+<h3>Fotos neste Álbum</h3>
+
+<% if (fotos && fotos.length > 0) { %>
+  <div class="grid">
+    <% fotos.forEach(foto => { %>
+      <div class="card" style="padding: 1rem;">
+        <img src="<%= foto.url %>" alt="<%= foto.titulo %>" class="foto-img" onerror="this.src='https://via.placeholder.com/400x300?text=Imagem+N%C3%A3o+Encontrada'">
+        
+        <div style="padding: 0.5rem;">
+          <h4 style="margin-bottom: 0.5rem;"><%= foto.titulo %></h4>
+          
+          <% if (foto.tags && foto.tags.length > 0) { %>
+            <div style="margin-bottom: 1rem;">
+              <% foto.tags.forEach(tag => { %>
+                <span class="tag"><%= tag %></span>
+              <% }) %>
+            </div>
+          <% } %>
+
+          <form action="/fotos/<%= foto._id %>/deletar?album=<%= album._id %>" method="POST" onsubmit="return confirm('Deletar esta foto?');">
+            <button type="submit" class="btn btn-danger" style="width: 100%; padding: 0.5rem;">Remover Foto</button>
+          </form>
+        </div>
+      </div>
+    <% }) %>
+  </div>
+<% } else { %>
+  <div class="card text-center" style="padding: 3rem;">
+    <p style="color: var(--text-muted);">Este álbum ainda não possui fotos.</p>
+  </div>
+<% } %>
+
+<%- include('partials/footer') %>

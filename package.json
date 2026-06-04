@@ -2,9 +2,11 @@
   "name": "album-fotos-backend",
   "version": "1.0.0",
   "description": "Projeto de biblioteca de classes para acesso ao MongoDB - armazenamento de fotos",
-  "main": "src/app.js",
+  "main": "src/server.js",
   "scripts": {
-    "start": "node src/app.js"
+    "start": "node src/server.js",
+    "cli": "node src/cli.js",
+    "dev": "node --watch src/server.js"
   },
   "keywords": [
     "node",
@@ -16,6 +18,10 @@
   "author": "Aluno: João Victor da Cruz Silvestre",
   "license": "ISC",
   "dependencies": {
+    "dotenv": "^17.4.2",
+    "ejs": "^6.0.1",
+    "express": "^5.2.1",
+    "express-session": "^1.19.0",
     "mongoose": "^7.0.0",
     "mongoose-sequence": "^6.0.1"
   }

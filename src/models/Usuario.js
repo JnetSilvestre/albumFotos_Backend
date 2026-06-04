@@ -17,6 +17,10 @@ const usuarioSchema = new mongoose.Schema(
       trim: true,
       lowercase: true
     },
+    senha: {
+      type: String,
+      required: true
+    },
     dataCriacao: {
       type: Date,
       default: Date.now
@@ -38,6 +42,10 @@ function validarCamposObrigatoriosUsuario(dados) {
   if (!dados.email || !dados.email.trim()) {
     throw new Error('O campo email é obrigatório.');
   }
+
+  if (!dados.senha || !dados.senha.trim()) {
+    throw new Error('O campo senha é obrigatório.');
+  }
 }
 
 usuarioSchema.statics.criarUsuario = async function (dados) {
@@ -46,7 +54,8 @@ usuarioSchema.statics.criarUsuario = async function (dados) {
 
     const novoUsuario = new this({
       nome: dados.nome.trim(),
-      email: dados.email.trim().toLowerCase()
+      email: dados.email.trim().toLowerCase(),
+      senha: dados.senha.trim()
     });
 
     const usuarioSalvo = await novoUsuario.save();
@@ -104,6 +113,29 @@ usuarioSchema.statics.deletar = async function (id) {
     }
 
     return { sucesso: true, dados: usuarioRemovido };
+  } catch (error) {
+    logError(error);
+    return { sucesso: false, erro: error.message };
+  }
+};
+
+usuarioSchema.statics.autenticar = async function (email, senha) {
+  try {
+    if (!email || !senha) {
+      return { sucesso: false, erro: 'Email e senha são obrigatórios.' };
+    }
+
+    const usuario = await this.findOne({ email: email.trim().toLowerCase() });
+    
+    if (!usuario) {
+      return { sucesso: false, erro: 'Usuário não encontrado.' };
+    }
+
+    if (usuario.senha !== senha.trim()) {
+      return { sucesso: false, erro: 'Senha incorreta.' };
+    }
+
+    return { sucesso: true, dados: usuario };
   } catch (error) {
     logError(error);
     return { sucesso: false, erro: error.message };
